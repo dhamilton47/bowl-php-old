@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="page-header">
-                    {{ $profileUser['name'] }}
-                {{--<avatar-form :user="{{ $profileUser }}"></avatar-form>--}}
+{{--                    {{ $profileUser['name'] }}--}}
+                    <avatar-form :user="{{ $profileUser }}"></avatar-form>
                 </div>
             </div>
         </div>

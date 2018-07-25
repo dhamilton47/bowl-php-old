@@ -25,6 +25,22 @@ window.Vue = require('vue');
 
 Vue.use(InstantSearch);
 
+let authorizations = require('./authorizations');
+
+Vue.prototype.authorize = function (...params) {
+
+    if (! window.App.signedIn) return false;
+
+    if (typeof params[0] === 'string') {
+        return authorizations[params[0]](params[1]);
+    }
+
+    return params[0](window.App.user);
+    // Additional admin parameters can go here.
+};
+
+Vue.prototype.signedIn = window.App.signedIn;
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

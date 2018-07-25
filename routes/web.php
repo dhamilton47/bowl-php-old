@@ -20,3 +20,6 @@ Route::get('contact', 'HomeController@contact')->name('contact');
 Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
+
+Route::get('api/users', 'Api\UsersController@index');
+Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
