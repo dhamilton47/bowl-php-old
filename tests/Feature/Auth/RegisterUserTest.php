@@ -159,7 +159,7 @@ class RegisterUserTest extends TestCase implements ShouldQueue
     /** @test */
     public function username_is_unique()
     {
-        create(\App\User::class, ['username' => 'john']);
+        create(User::class, ['username' => 'john']);
         $this->withExceptionHandling();
         $this->from(route('register'));
 
@@ -224,7 +224,7 @@ class RegisterUserTest extends TestCase implements ShouldQueue
     /** @test */
     public function email_is_unique()
     {
-        create(\App\User::class, ['email' => 'johndoe@example.com']);
+        create(User::class, ['email' => 'johndoe@example.com']);
         $this->withExceptionHandling();
         $this->from(route('register'));
 
