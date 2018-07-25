@@ -44,6 +44,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the route key name for Laravel.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
+    /**
      * Mark the user's account as confirmed.
      */
     public function confirm()

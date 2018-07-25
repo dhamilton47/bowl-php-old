@@ -19,3 +19,4 @@ Route::get('contact', 'HomeController@contact')->name('contact');
 
 Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
