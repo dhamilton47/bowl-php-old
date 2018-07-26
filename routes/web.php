@@ -23,3 +23,13 @@ Route::get('profiles/{user}', 'ProfilesController@show')->name('profile');
 
 Route::get('api/users', 'Api\UsersController@index');
 Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
+
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'auth',
+    'namespace' => 'Admin'
+], function () {
+    Route::get('', 'DashboardController@index')->name('admin.dashboard.index');
+    Route::get('school', 'AdminSchoolController@show')->name('admin.school.show');
+    Route::get('team', 'AdminTeamController@show')->name('admin.team.show');
+});
