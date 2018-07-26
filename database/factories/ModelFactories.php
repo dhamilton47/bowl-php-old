@@ -25,3 +25,15 @@ $factory->define(App\User::class, function (Faker $faker) {
         'confirmed' => true
     ];
 });
+
+$factory->define(App\School::class, function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return factory(\App\User::class)->create()->id;
+        },
+        'name' => $faker->unique()->name,
+//        'city' => $faker->city,
+//        'state' => $faker->stateAbbr,
+//        'district' => $faker->word,
+    ];
+});

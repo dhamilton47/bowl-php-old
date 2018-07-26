@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\School;
 use App\Http\Controllers\Controller;
 
 class AdminSchoolController extends Controller
@@ -11,10 +12,12 @@ class AdminSchoolController extends Controller
      */
     public function show()
     {
+        $school = School::where('user_id', auth()->user()->id)->get()[0];
+
         if (! auth()->user()) {
             return redirect(route('home'));
         }
 
-        return view('admin.school.show');
+        return view('admin.school.show', compact('school'));
     }
 }

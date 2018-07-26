@@ -54,6 +54,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Fetch all schools that are administered by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function school()
+    {
+        return $this->hasOne(School::class)->latest();
+    }
+
+    /**
      * Mark the user's account as confirmed.
      */
     public function confirm()
