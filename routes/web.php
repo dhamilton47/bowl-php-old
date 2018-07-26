@@ -33,3 +33,13 @@ Route::group([
     Route::get('school', 'AdminSchoolController@show')->name('admin.school.show');
     Route::get('team', 'AdminTeamController@show')->name('admin.team.show');
 });
+
+Route::group([
+    'prefix' => 'scoring',
+    'middleware' => 'auth',
+    'namespace' => 'Scoring'
+], function () {
+    Route::get('', 'DashboardController@index')->name('scoring.dashboard.index');
+    Route::get('summary', 'ScoringSummaryController@show')->name('scoring.summary.show');
+    Route::get('game', 'ScoringGameController@show')->name('scoring.game.show');
+});

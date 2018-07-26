@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('sidebar')
-    <aside class="">
+    <aside>
         <div class="card mb-4">
             <h5 class="card-header text-center" style="background-color: #98e1b7">Scoring</h5>
 
@@ -42,6 +42,6 @@
 
 @section('content')
     {{--<div class="py-6">--}}
-        @yield('administration-content')
+    @yield('scoring-content')
     {{--</div>--}}
 @endsection
