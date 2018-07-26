@@ -9,15 +9,7 @@
 
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-2">
-                    @section('sidebar')
-                        @include('sidebar')
-                    @show
-                </div>
-
-                <div class="col-md-10">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
         </div>
 
