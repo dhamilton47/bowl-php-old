@@ -3,7 +3,7 @@
         <div class="level">
             <img :src="avatar" class="mr-1" width="50" height="50">
 
-            <h1 v-text="user.name"></h1>
+            <h1 v-text="scorer.name"></h1>
 
                 <!-- <small> member since <span v-text="ago"></span></small> -->
                 <!-- <small> member since {{ $profileUser->created_at->diffForHumans() }}</small> -->
@@ -13,8 +13,6 @@
         <form v-if="canUpdate" method="POST" enctype="multipart/form-data">
             <image-upload name="avatar" class="mr-1" @loaded="onLoad"></image-upload>
         </form>
-
-        </div>
     </div>
 </template>
 
@@ -23,23 +21,23 @@
     import ImageUpload from './ImageUpload.vue';
 
     export default {
-        props: ['user'],
+        props: ['scorer'],
 
         components: { moment, ImageUpload },
 
         data() {
             return {
-                avatar: this.user.avatar_path
+                avatar: this.scorer.avatar_path
             };
         },
 
         computed: {
             ago() {
-                return moment(this.user.created_at + 'Z').fromNow() + '...';
+                return moment(this.scorer.created_at + 'Z').fromNow() + '...';
             },
 
             canUpdate() {
-                return this.authorize(user => user.id === this.user.id)
+                return this.authorize(scorer => scorer.id === this.scorer.id)
             }
         },
 
@@ -55,7 +53,7 @@
 
                 data.append('avatar', avatar);
 
-                axios.post(`/api/users/${this.user.name}/avatar`, data)
+                axios.post(`/api/scorers/${this.scorer.name}/avatar`, data)
                     .then(() => flash('Avatar uploaded!'));
             }
         }

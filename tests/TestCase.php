@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\User;
+use App\Scorer;
 use App\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,11 +21,11 @@ abstract class TestCase extends BaseTestCase
         $this->disableExceptionHandling();
     }
 
-    protected function signIn($user = null)
+    protected function signIn($scorer = null)
     {
-        $user = $user ?: create(User::class);
+        $scorer = $scorer ?: create(Scorer::class);
 
-        $this->actingAs($user);
+        $this->actingAs($scorer);
 
         return $this;
     }

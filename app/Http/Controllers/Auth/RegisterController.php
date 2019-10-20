@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Scorer;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\PleaseConfirmYourEmail;
-use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -51,10 +51,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'max:255',
-            'username' => 'required|max:255|unique:users|alpha_dash',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'scorer_name' => 'max:255',
+            'scorer_username' => 'required|max:255|unique:scorers|alpha_dash',
+            'scorer_email' => 'required|email|max:255|unique:scorers',
+            'scorer_password' => 'required|min:6|confirmed',
         ]);
     }
 
@@ -62,16 +62,16 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Scorer
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'confirmation_token' => str_limit(md5($data['email'] . str_random()), 25, '')
+        return Scorer::create([
+            'scorer_name' => $data['scorer_name'],
+            'scorer_username' => $data['scorer_username'],
+            'scorer_email' => $data['scorer_email'],
+            'scorer_password' => bcrypt($data['scorer_password']),
+            'scorer_confirmation_token' => str_limit(md5($data['scorer_email'] . str_random()), 25, '')
         ]);
     }
 
@@ -79,12 +79,13 @@ class RegisterController extends Controller
      * The user has been registered.
      *
      * @param  Request  $request
-     * @param  mixed    $user
+     * @param  mixed    $scorer
      * @return mixed
      */
-    protected function registered(Request $request, $user)
+    protected function registered(Request $request, $scorer)
     {
-        Mail::to($user)->send(new PleaseConfirmYourEmail($user));
+//        dd($scorer);
+        Mail::to($scorer)->send(new PleaseConfirmYourEmail($scorer));
 
         return redirect($this->redirectPath());
     }

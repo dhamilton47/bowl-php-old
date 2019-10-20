@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AccessAdminSectionTest extends TestCase
 {
     /** @test */
-    public function a_user_can_access_the_administration_section()
+    public function a_usscorer_can_access_the_administration_section()
     {
         $this->withExceptionHandling()
             ->signIn()

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class Team extends Model
 {
     /**
      * Don't auto-apply mass assignment protection.
@@ -18,7 +18,7 @@ class School extends Model
      *
      * @var array
      */
-    protected $with = [];
+    protected $with = ['school', 'owner'];
 
     /**
      * The accessors to append to the model's array form.
@@ -35,20 +35,40 @@ class School extends Model
     protected $casts = [];
 
     /**
-     * Get a string path for the school.
+     * Get a string path for the team.
      *
      * @return string
      */
     public function path()
     {
-        return "/admin/school/{$this->id}";
+        return "/admin/school/team/{$this->id}";
     }
 
     /**
-     * Fetch the path to the school as a property.
+     * Fetch the path to the team as a property.
      */
     public function getPathAttribute()
     {
         return $this->path();
+    }
+
+    /**
+     * A team belongs to a school (user/scorer).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id');
+    }
+
+    /**
+     * A team belongs to a owner (user/scorer).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo(Scorer::class, 'user_id');
     }
 }

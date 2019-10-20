@@ -12,66 +12,90 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label for="scorer_name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="scorer_name"
+                                       type="text"
+                                       class="form-control{{ $errors->has('scorer_name') ? ' is-invalid' : '' }}"
+                                       name="scorer_name"
+                                       value="{{ old('scorer_name') }}"
+                                       {{--required--}}
+                                       autofocus>
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('scorer_name'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('scorer_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                            <label for="scorer_username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
+                                <input id="scorer_username"
+                                       type="text"
+                                       class="form-control{{ $errors->has('scorer_username') ? ' is-invalid' : '' }}"
+                                       name="scorer_username"
+                                       value="{{ old('scorer_username') }}"
+                                       required>
 
-                                @if ($errors->has('username'))
+                                @if ($errors->has('scorer_username'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong>{{ $errors->first('scorer_username') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="scorer_email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                <input id="scorer_email"
+                                       type="email"
+                                       class="form-control{{ $errors->has('scorer_email') ? ' is-invalid' : '' }}"
+                                       name="scorer_email"
+                                       value="{{ old('scorer_email') }}"
+                                       required>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('scorer_email'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('scorer_email') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="scorer_password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                <input id="scorer_password"
+                                       type="password"
+                                       class="form-control{{ $errors->has('scorer_password') ? ' is-invalid' : '' }}"
+                                       name="scorer_password"
+                                       required>
 
-                                @if ($errors->has('password'))
+                                @if ($errors->has('scorer_password'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                        <strong>{{ $errors->first('scorer_password') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="scorer_password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="scorer_password-confirm"
+                                       type="password"
+                                       class="form-control"
+                                       name="scorer_password_confirmation"
+                                       required>
                             </div>
                         </div>
 

@@ -13,7 +13,6 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
     <!-- Scripts -->
@@ -24,25 +23,6 @@
             'signedIn' => Auth::check(),
         ]) !!};
     </script>
-
-
-    <style media="screen">
-        /*body { padding-bottom: 100px; }*/
-        /*.footer {*/
-            /*position: absolute;*/
-            /*bottom: 0;*/
-            /*width: 100%;*/
-            /*height: 60px; !* Set the fixed height of the footer here *!*/
-            /*line-height: 60px; !* Vertically center the text there *!*/
-            /*background-color: #f5f5f5;*/
-        /*}*/
-        /*.level { display: flex; align-items: center; }*/
-        /*.flex { flex: 1; }*/
-        /*.mr-1 { margin-right: 1em; }*/
-        /*.ml-a { margin-left: auto; }*/
-        /*[v-cloak] { display: none; }*/
-        /*.ais-highlight > em { background: yellow; font-style: normal; }*/
-    </style>
 
     @yield('head')
 </head>

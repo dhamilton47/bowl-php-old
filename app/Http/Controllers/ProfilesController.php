@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Scorer;
 
 class ProfilesController extends Controller
 {
-    public function show(User $user)
+    public function show(Scorer $scorer)
     {
         return view('profiles.show', [
-            'profileUser' => $user,
+            'profileScorer' => $scorer,
         ]);
     }
 }

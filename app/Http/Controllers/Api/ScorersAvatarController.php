@@ -5,23 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
-class UserAvatarController extends Controller
+class ScorersAvatarController extends Controller
 {
     /**
-     * Store a new user avatar.
+     * Store a new scorer avatar.
      *
      * @return \Illuminate\Http\Response
      */
     public function store()
     {
         request()->validate([
-            'avatar' => ['required', 'image']
+            'scorer_avatar' => ['required', 'image']
         ]);
 
-        Storage::disk('public')->delete(auth()->user()->getOriginal('avatar_path'));
+        Storage::disk('public')->delete(auth()->user()->getOriginal('scorer_avatar_path'));
 
         auth()->user()->update([
-            'avatar_path' => request()->file('avatar')->store('avatars', 'public')
+            'scorer_avatar_path' => request()->file('scorer_avatar')->store('avatars', 'public')
         ]);
 
         return response([], 204);

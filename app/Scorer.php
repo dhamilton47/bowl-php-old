@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Scorer extends Authenticatable
 {
     use Notifiable;
 
@@ -15,12 +15,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'username',
-        'email',
-        'password',
-        'confirmation_token',
-        'avatar_path',
+        'scorer_name',
+        'scorer_username',
+        'scorer_email',
+        'scorer_password',
+        'scorer_confirmation_token',
+        'scorer_avatar_path',
     ];
 
     /**
@@ -29,9 +29,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
-        'email',
+        'scorer_password',
+        'scorer_remember_token',
+        'scorer_email',
     ];
 
     /**
@@ -40,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'confirmed' => 'boolean'
+        'scorer_confirmed' => 'boolean'
     ];
 
     /**
@@ -50,11 +50,11 @@ class User extends Authenticatable
      */
     public function getRouteKeyName()
     {
-        return 'username';
+        return 'scorer_username';
     }
 
     /**
-     * Fetch all schools that are administered by the user.
+     * Fetch the school that is administered by the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -64,24 +64,34 @@ class User extends Authenticatable
     }
 
     /**
-     * Mark the user's account as confirmed.
+     * Fetch the team(s) that is(are) administered by the scorer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function team()
+    {
+        return $this->hasMany(Team::class)->latest();
+    }
+
+    /**
+     * Mark the scorer's account as confirmed.
      */
     public function confirm()
     {
-        $this->confirmed = true;
-        $this->confirmation_token = null;
+        $this->scorer_confirmed = true;
+        $this->scorer_confirmation_token = null;
 
         $this->save();
     }
 
     /**
-     * Get the path to the user's avatar.
+     * Get the path to the scorer's avatar.
      *
      * @param  string $avatar
      * @return string
      */
-    public function getAvatarPathAttribute($avatar)
+    public function getScorerAvatarPathAttribute($scorer_avatar)
     {
-        return asset($avatar ? ('storage/' . $avatar): 'images/avatars/default.png');
+        return asset($scorer_avatar ? ('storage/' . $scorer_avatar): 'images/avatars/default.png');
     }
 }

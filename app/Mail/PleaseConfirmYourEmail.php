@@ -14,18 +14,18 @@ class PleaseConfirmYourEmail extends Mailable implements ShouldQueue
     /**
      * The user associated with the email.
      *
-     * @var \App\User
+     * @var \App\Scorer
      */
-    public $user;
+    public $scorer;
 
     /**
      * Create a new mailable instance.
      *
-     * @param \App\User $user
+     * @param \App\Scorer $scorer
      */
-    public function __construct($user)
+    public function __construct($scorer)
     {
-        $this->user = $user;
+        $this->scorer = $scorer;
     }
 
     /**
@@ -35,7 +35,7 @@ class PleaseConfirmYourEmail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-//        dd($this->user);
+//        dd($this->scorer);
         return $this->markdown('emails.confirm-email');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Scorer;
 use App\Http\Controllers\Controller;
 
 class RegisterConfirmationController extends Controller
@@ -14,14 +14,14 @@ class RegisterConfirmationController extends Controller
      */
     public function index()
     {
-         $user = User::where('confirmation_token', request('token'))->first();
+        $scorer = Scorer::where('scorer_confirmation_token', request('scorer_confirmation_token'))->first();
 
-         if (! $user) {
-             return redirect(route('home'))
-                 ->with('flash', 'Invalid email confirmation.');
+        if (! $scorer) {
+            return redirect(route('home'))
+                ->with('flash', 'Invalid email confirmation.');
         }
 
-        $user->confirm();
+        $scorer->confirm();
 
         return redirect(route('home'))
             ->with('flash', 'Your account is now active.');

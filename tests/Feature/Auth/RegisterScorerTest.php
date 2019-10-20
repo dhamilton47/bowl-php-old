@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use App\User;
+use App\Scorer;
 use Tests\TestCase;
 use App\Mail\PleaseConfirmYourEmail;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RegisterUserTest extends TestCase implements ShouldQueue
+class RegisterScorerTest extends TestCase implements ShouldQueue
 {
     public function setUp()
     {
@@ -20,26 +20,26 @@ class RegisterUserTest extends TestCase implements ShouldQueue
     }
 
     /** @test */
-    public function users_can_register_an_account()
+    public function scorers_can_register_an_account()
     {
         $response = $this->post(route('register'), [
-            'name' => 'John Doe',
-            'username' => 'johndoe',
-            'email' => 'johndoe@example.com',
-            'password' => 'secret',
-            'password_confirmation' => 'secret',
+            'scorer_name' => 'John Doe',
+            'scorer_username' => 'johndoe',
+            'scorer_email' => 'johndoe@example.com',
+            'scorer_password' => 'secret',
+            'scorer_password_confirmation' => 'secret',
         ]);
 
         $response->assertRedirect('');
 
         $this->assertTrue(Auth::check());
-        $this->assertCount(1, User::all());
+        $this->assertCount(1, Scorer::all());
 
-        tap(User::first(), function ($user) {
-            $this->assertEquals('John Doe', $user->name);
-            $this->assertEquals('johndoe', $user->username);
-            $this->assertEquals('johndoe@example.com', $user->email);
-            $this->assertTrue(Hash::check('secret', $user->password));
+        tap(Scorer::first(), function ($scorer) {
+            $this->assertEquals('John Doe', $scorer->scorer_name);
+            $this->assertEquals('johndoe', $scorer->scorer_username);
+            $this->assertEquals('johndoe@example.com', $scorer->scorer_email);
+            $this->assertTrue(Hash::check('secret', $scorer->scorer_password));
         });
     }
 
@@ -52,250 +52,250 @@ class RegisterUserTest extends TestCase implements ShouldQueue
     }
 
     /** @test */
-    public function user_can_fully_confirm_their_email_addresses()
+    public function scorer_can_fully_confirm_their_email_addresses()
     {
         $this->post(route('register'), $this->validParams([
-            'email' => 'john@example.com',
+            'scorer_email' => 'john@example.com',
         ]));
 
-        $user = User::whereEmail('john@example.com')->first();
+        $scorer = Scorer::where('scorer_email', 'john@example.com')->first();
 
-        $this->assertFalse($user->confirmed);
-        $this->assertNotNull($user->confirmation_token);
+        $this->assertFalse($scorer->scorer_confirmed);
+        $this->assertNotNull($scorer->scorer_confirmation_token);
 
-        $this->get(route('register.confirm', ['token' => $user->confirmation_token]))
+        $this->get(route('register.confirm', ['scorer_confirmation_token' => $scorer->scorer_confirmation_token]))
             ->assertRedirect(route('home'));
 
-        tap($user->fresh(), function ($user) {
-            $this->assertTrue($user->confirmed);
-            $this->assertNull($user->confirmation_token);
+        tap($scorer->fresh(), function ($scorer) {
+            $this->assertTrue($scorer->scorer_confirmed);
+            $this->assertNull($scorer->scorer_confirmation_token);
         });
     }
 
     /** @test */
     public function confirming_an_invalid_token()
     {
-        $this->get(route('register.confirm', ['token' => 'invalid']))
+        $this->get(route('register.confirm', ['scorer_token' => 'invalid']))
             ->assertRedirect(route('home'))
             ->assertSessionHas('flash', 'Invalid email confirmation.');
     }
 
     /** @test */
-    public function name_is_optional()
+    public function scorer_name_is_optional()
     {
         $response = $this->post(route('register'), $this->validParams([
-            'name' => '',
+            'scorer_name' => '',
         ]));
 
         $response->assertRedirect(route('home'));
         $this->assertTrue(Auth::check());
-        $this->assertCount(1, User::all());
+        $this->assertCount(1, Scorer::all());
     }
 
     /** @test */
-    public function name_cannot_exceed_255_chars()
+    public function scorer_name_cannot_exceed_255_chars()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'name' => str_repeat('a', 256),
+            'scorer_name' => str_repeat('a', 256),
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors('scorer_name');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function username_is_required()
+    public function scorer_username_is_required()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'username' => '',
+            'scorer_username' => '',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('username');
+        $response->assertSessionHasErrors('scorer_username');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function username_is_url_safe()
+    public function scorer_username_is_url_safe()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'username' => 'spaces and symbols!',
+            'scorer_username' => 'spaces and symbols!',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('username');
+        $response->assertSessionHasErrors('scorer_username');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function username_cannot_exceed_255_chars()
+    public function scorer_username_cannot_exceed_255_chars()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'username' => str_repeat('a', 256),
+            'scorer_username' => str_repeat('a', 256),
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('username');
+        $response->assertSessionHasErrors('scorer_username');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function username_is_unique()
+    public function scorer_username_is_unique()
     {
-        create(User::class, ['username' => 'john']);
+        create(Scorer::class, ['scorer_username' => 'john']);
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'username' => 'john',
+            'scorer_username' => 'john',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('username');
+        $response->assertSessionHasErrors('scorer_username');
         $this->assertFalse(Auth::check());
-        $this->assertCount(1, User::all());
+        $this->assertCount(1, Scorer::all());
     }
 
     /** @test */
-    public function email_is_required()
-    {
-        $this->withExceptionHandling();
-        $this->from(route('register'));
-
-        $response = $this->post(route('register'), $this->validParams([
-            'email' => '',
-        ]));
-
-        $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('email');
-        $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
-    }
-
-    /** @test */
-    public function email_is_valid()
+    public function scorer_email_is_required()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'email' => 'not-an-email-address',
+            'scorer_email' => '',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('email');
+        $response->assertSessionHasErrors('scorer_email');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function email_cannot_exceed_255_chars()
+    public function scorer_email_is_valid()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'email' => substr(str_repeat('a', 256) . '@example.com', -256),
+            'scorer_email' => 'not-an-email-address',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('email');
+        $response->assertSessionHasErrors('scorer_email');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function email_is_unique()
-    {
-        create(User::class, ['email' => 'johndoe@example.com']);
-        $this->withExceptionHandling();
-        $this->from(route('register'));
-
-        $response = $this->post(route('register'), $this->validParams([
-            'email' => 'johndoe@example.com',
-        ]));
-
-        $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('email');
-        $this->assertFalse(Auth::check());
-        $this->assertCount(1, User::all());
-    }
-
-    /** @test */
-    public function password_is_required()
+    public function scorer_email_cannot_exceed_255_chars()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'password' => '',
+            'scorer_email' => substr(str_repeat('a', 256) . '@example.com', -256),
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('password');
+        $response->assertSessionHasErrors('scorer_email');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function password_must_be_confirmed()
+    public function scorer_email_is_unique()
+    {
+        create(Scorer::class, ['scorer_email' => 'johndoe@example.com']);
+        $this->withExceptionHandling();
+        $this->from(route('register'));
+
+        $response = $this->post(route('register'), $this->validParams([
+            'scorer_email' => 'johndoe@example.com',
+        ]));
+
+        $response->assertRedirect(route('register'));
+        $response->assertSessionHasErrors('scorer_email');
+        $this->assertFalse(Auth::check());
+        $this->assertCount(1, Scorer::all());
+    }
+
+    /** @test */
+    public function scorer_password_is_required()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'password' => 'foo',
-            'password_confirmation' => 'bar'
+            'scorer_password' => '',
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('password');
+        $response->assertSessionHasErrors('scorer_password');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
     }
 
     /** @test */
-    public function password_must_be_6_chars()
+    public function scorer_password_must_be_confirmed()
     {
         $this->withExceptionHandling();
         $this->from(route('register'));
 
         $response = $this->post(route('register'), $this->validParams([
-            'password' => 'foo',
-            'password_confirmation' => 'foo',
+            'scorer_password' => 'foo',
+            'scorer_password_confirmation' => 'bar'
         ]));
 
         $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors('password');
+        $response->assertSessionHasErrors('scorer_password');
         $this->assertFalse(Auth::check());
-        $this->assertCount(0, User::all());
+        $this->assertCount(0, Scorer::all());
+    }
+
+    /** @test */
+    public function scorer_password_must_be_6_chars()
+    {
+        $this->withExceptionHandling();
+        $this->from(route('register'));
+
+        $response = $this->post(route('register'), $this->validParams([
+            'scorer_password' => 'foo',
+            'scorer_password_confirmation' => 'foo',
+        ]));
+
+        $response->assertRedirect(route('register'));
+        $response->assertSessionHasErrors('scorer_password');
+        $this->assertFalse(Auth::check());
+        $this->assertCount(0, Scorer::all());
     }
 
     private function validParams($overrides = [])
     {
         return array_merge([
-            'name' => 'John Doe',
-            'username' => 'johndoe',
-            'email' => 'johndoe@example.com',
-            'password' => 'secret',
-            'password_confirmation' => 'secret',
+            'scorer_name' => 'John Doe',
+            'scorer_username' => 'johndoe',
+            'scorer_email' => 'johndoe@example.com',
+            'scorer_password' => 'secret',
+            'scorer_password_confirmation' => 'secret',
         ], $overrides);
     }
 }

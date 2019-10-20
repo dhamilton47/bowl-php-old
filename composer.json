@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "dhamilton47/hsbowl",
+    "description": "High School Bowling - Match Scoring Application.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",

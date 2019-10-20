@@ -12,7 +12,7 @@ class AdminSchoolController extends Controller
      */
     public function show()
     {
-        $school = School::where('user_id', auth()->user()->id)->get()[0];
+        $school = School::where('scorer_id', auth()->user()->id)->get()[0];
 
         if (! auth()->user()) {
             return redirect(route('home'));

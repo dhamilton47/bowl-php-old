@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Scorer;
 use Tests\TestCase;
 
 class ProfilesTest extends TestCase
 {
     /** @test */
-    public function a_user_has_a_profile()
+    public function a_scorer_has_a_profile()
     {
-        $user = create(User::class);
+        $scorer = create(Scorer::class);
 
-        $this->get("/profiles/{$user->username}")
-            ->assertSee($user->name);
+        $this->get("/profiles/{$scorer->scorer_username}")
+            ->assertSee($scorer->scorer_name);
     }
 }

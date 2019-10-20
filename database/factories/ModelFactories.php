@@ -13,27 +13,32 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Scorer::class, function (Faker $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
-        'username' => $faker->unique()->userName,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
-        'confirmed' => true
+        'scorer_name' => $faker->name,
+        'scorer_username' => $faker->unique()->userName,
+        'scorer_email' => $faker->unique()->safeEmail,
+        'scorer_password' => $password ?: $password = bcrypt('secret'),
+        'scorer_remember_token' => str_random(10),
+        'scorer_confirmed' => true
     ];
 });
 
 $factory->define(App\School::class, function (Faker $faker) {
     return [
-        'user_id' => function () {
-            return factory(\App\User::class)->create()->id;
-        },
-        'name' => $faker->unique()->name,
-//        'city' => $faker->city,
-//        'state' => $faker->stateAbbr,
-//        'district' => $faker->word,
+        'school_name' => $faker->name,
+        'school_city' => $faker->city,
+        'school_state' => $faker->stateAbbr,
+        'school_district' => $faker->word,
     ];
+});
+
+$factory->define(App\Team::class, function (Faker $faker) {
+    return [
+        'school_id' => function () {
+            return factory(\App\School::class)->create()->id;
+        },
+     ];
 });
